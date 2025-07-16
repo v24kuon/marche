@@ -1,0 +1,34 @@
+/**
+ * Marche Management Plugin フロントエンドCSS
+ *
+ * @package MarcheManagement
+ * @author AI Assistant
+ * @version 1.0.0
+ */
+
+/* エリア選択肢のローディング表示 */
+.wpcf7-form select[name="booth-location"].loading {
+  background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-dasharray="37.68" stroke-dashoffset="37.68"><animate attributeName="stroke-dashoffset" dur="2s" values="37.68;0;37.68" repeatCount="indefinite"/></circle></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
+  padding-right: 35px;
+}
+
+/* エラーメッセージのスタイル */
+.wpcf7-form .wpcf7-not-valid-tip {
+  color: #d63638;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+/* 成功メッセージのスタイル */
+.wpcf7-form .wpcf7-mail-sent-ok {
+  color: #00a32a;
+  background-color: #f0f6fc;
+  border: 1px solid #c3e6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}

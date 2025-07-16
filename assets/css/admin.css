@@ -1,0 +1,1653 @@
+/**
+ * Marche Management Plugin 管理画面CSS
+ *
+ * @package MarcheManagement
+ * @author AI Assistant
+ * @version 1.0.0
+ */
+
+/* フォーム管理画面 */
+.marche-form-list {
+  margin-bottom: 40px;
+}
+
+.marche-form-list h2 {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.marche-available-forms {
+  margin-top: 40px;
+}
+
+.marche-available-forms h2 {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* テーブルスタイル */
+.marche-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.marche-table th,
+.marche-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.marche-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.marche-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* ボタンスタイル */
+.marche-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-right: 5px;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #f7f7f7;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+.marche-button:hover {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.marche-button.primary {
+  background-color: #0073aa;
+  border-color: #0073aa;
+  color: #fff;
+}
+
+.marche-button.primary:hover {
+  background-color: #005a87;
+  border-color: #005a87;
+  color: #fff;
+}
+
+.marche-button.secondary {
+  background-color: #f7f7f7;
+  border-color: #ccc;
+  color: #333;
+}
+
+.marche-button.secondary:hover {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+/* フォームスタイル */
+.marche-form-section {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.marche-form-section h3 {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.marche-form-row {
+  margin-bottom: 15px;
+}
+
+.marche-form-row label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.marche-form-row input,
+.marche-form-row select,
+.marche-form-row textarea {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.marche-form-row input:focus,
+.marche-form-row select:focus,
+.marche-form-row textarea:focus {
+  border-color: #0073aa;
+  outline: none;
+  box-shadow: 0 0 0 1px #0073aa;
+}
+
+/* 通知メッセージ */
+.marche-notice {
+  padding: 10px 15px;
+  margin: 15px 0;
+  border-radius: 3px;
+}
+
+.marche-notice.success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.marche-notice.error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.marche-notice.warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+}
+
+.marche-notice.info {
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+}
+
+/* 管理画面全体のスタイル */
+.marche-admin-page {
+  max-width: 1200px;
+}
+
+.marche-admin-page h1 {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #0073aa;
+}
+
+.marche-admin-page h2 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 768px) {
+
+  .marche-form-row input,
+  .marche-form-row select,
+  .marche-form-row textarea {
+    max-width: 100%;
+  }
+
+  .marche-button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .wp-list-table {
+    font-size: 14px;
+  }
+
+  .wp-list-table th,
+  .wp-list-table td {
+    padding: 8px;
+  }
+}
+
+/* 管理画面のタブ */
+.marche-nav-tab-wrapper {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.marche-nav-tab {
+  display: inline-block;
+  padding: 10px 15px;
+  margin-right: 5px;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.marche-nav-tab:hover {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.marche-nav-tab.active {
+  background-color: #fff;
+  color: #333;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+}
+
+/* ローディング */
+.marche-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #0073aa;
+  border-radius: 50%;
+  animation: marche-spin 1s linear infinite;
+}
+
+@keyframes marche-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ヘルプテキスト */
+.marche-help-text {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+/* エラーメッセージ */
+.marche-error-message {
+  color: #d63384;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+/* 成功メッセージ */
+.marche-success-message {
+  color: #198754;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+/* 開催日管理画面 */
+.marche-form-selector {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.marche-form-selector h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.marche-form-selector select {
+  min-width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.marche-date-list {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 20px;
+}
+
+.marche-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.marche-list-header h2 {
+  margin: 0;
+}
+
+/* ステータスバッジ */
+.marche-status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.marche-status-badge.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.marche-status-badge.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ソート可能なテーブル - HTML5 Drag and Drop API */
+.marche-sortable-table .sort-handle {
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: grab;
+  text-align: center;
+  color: #666;
+  padding: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  position: relative;
+  min-width: 40px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+}
+
+.marche-sortable-table .sort-handle:hover {
+  color: #0073aa;
+  background-color: #e8f4f8;
+  border-color: #0073aa;
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 115, 170, 0.2);
+}
+
+.marche-sortable-table .sort-handle:active {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+  background-color: #cce7f0;
+  transform: scale(0.95);
+}
+
+.marche-sortable-table .sort-handle .dashicons {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ドラッグハンドルの疑似要素でより明確な表示 */
+.marche-sortable-table .sort-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+  z-index: -1;
+}
+
+.marche-sortable-table .sort-handle:hover::before {
+  background-color: rgba(0, 115, 170, 0.1);
+}
+
+/* ドラッグ中の行 */
+.marche-sortable-table tbody tr.dragging {
+  opacity: 0.7;
+  background-color: #e3f2fd;
+  border: 2px solid #2196f3;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+  transform: rotate(2deg);
+  z-index: 1000;
+}
+
+/* ドラッグオーバー時の行 */
+.marche-sortable-table tbody tr.drag-over {
+  background-color: #fff3cd;
+  border-top: 3px solid #ffc107;
+  border-bottom: 3px solid #ffc107;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+  transform: scale(1.02);
+}
+
+/* ドラッグ中の行のアニメーション */
+.marche-sortable-table tbody tr.dragging td {
+  border-color: #2196f3;
+}
+
+/* ドラッグオーバー時の行のアニメーション */
+.marche-sortable-table tbody tr.drag-over td {
+  border-color: #ffc107;
+}
+
+/* ドラッグ可能な行 */
+.marche-sortable-table tbody tr[draggable="true"] {
+  cursor: move;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.marche-sortable-table tbody tr[draggable="true"]:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 非アクティブな行 */
+.marche-sortable-table tbody tr.inactive {
+  opacity: 0.6;
+}
+
+.marche-sortable-table tbody tr.inactive td {
+  color: #666;
+}
+
+/* 必須項目 */
+.required {
+  color: #d63384;
+}
+
+/* フォームの改良 */
+.marche-form .form-table th {
+  width: 150px;
+  vertical-align: top;
+  padding-top: 15px;
+}
+
+.marche-form .form-table td {
+  padding-top: 10px;
+}
+
+.marche-form .description {
+  font-size: 13px;
+  color: #666;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+/* 日付入力フィールド */
+input[type="date"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: auto;
+}
+
+/* 小さなテキストフィールド */
+.small-text {
+  width: 80px;
+}
+
+/* エラー状態のフィールド */
+.marche-form input.error,
+.marche-form select.error,
+.marche-form textarea.error {
+  border-color: #d63384;
+  box-shadow: 0 0 0 1px #d63384;
+}
+
+/* レスポンシブ対応の改良 */
+@media screen and (max-width: 768px) {
+  .marche-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .marche-list-header h2 {
+    margin-bottom: 10px;
+  }
+
+  .marche-form-selector select {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .marche-form .form-table th,
+  .marche-form .form-table td {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .marche-form .form-table th {
+    border-bottom: none;
+    padding-bottom: 5px;
+  }
+}
+
+/* エリア管理画面 */
+.marche-area-list {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 20px;
+}
+
+/* 料金表示 */
+.marche-price-display {
+  font-weight: bold;
+  color: #0073aa;
+}
+
+/* 定員表示 */
+.marche-capacity-display {
+  display: inline-block;
+}
+
+.marche-capacity-unlimited {
+  color: #666;
+  font-style: italic;
+}
+
+.marche-capacity-limited {
+  color: #d63384;
+  font-weight: bold;
+}
+
+.marche-capacity-available {
+  color: #198754;
+}
+
+.marche-capacity-full {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* 定員状況インジケーター */
+.marche-capacity-indicator {
+  display: inline-block;
+  width: 100px;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  margin-left: 10px;
+  position: relative;
+}
+
+.marche-capacity-indicator .fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.marche-capacity-indicator .fill.low {
+  background-color: #198754;
+}
+
+.marche-capacity-indicator .fill.medium {
+  background-color: #ffc107;
+}
+
+.marche-capacity-indicator .fill.high {
+  background-color: #fd7e14;
+}
+
+.marche-capacity-indicator .fill.full {
+  background-color: #dc3545;
+}
+
+/* 数値入力フィールドの改良 */
+input[type="number"] {
+  text-align: left;
+}
+
+input[type="number"].price-input {
+  width: 120px;
+  text-align: left;
+}
+
+input[type="number"].capacity-input {
+  width: 80px;
+  text-align: left;
+}
+
+/* 価格入力フィールドの統一スタイル */
+.price-input,
+.marche-price-field {
+  text-align: left !important;
+}
+
+/* 通貨表示 */
+.currency-symbol {
+  font-weight: bold;
+  color: #666;
+  margin-left: 5px;
+}
+
+/* 単位表示 */
+.unit-label {
+  color: #666;
+  margin-left: 5px;
+}
+
+/* エリア管理固有のフォームスタイル */
+.marche-area-form .form-table td {
+  position: relative;
+}
+
+.marche-area-form .form-table .input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marche-area-form .form-table .input-group input {
+  flex: 0 0 auto;
+}
+
+.marche-area-form .form-table .input-group .unit {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 統計情報表示 */
+.marche-stats-box {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  padding: 15px;
+  margin: 20px 0;
+}
+
+.marche-stats-box h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #495057;
+}
+
+.marche-stats-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.marche-stats-row:last-child {
+  margin-bottom: 0;
+}
+
+.marche-stats-label {
+  font-weight: bold;
+}
+
+.marche-stats-value {
+  color: #0073aa;
+  font-weight: bold;
+}
+
+/* レンタル用品管理画面 */
+.marche-rental-list {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 20px;
+}
+
+.marche-rental-form {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 20px;
+}
+
+/* 単位選択フィールド */
+.marche-rental-form select[name="unit"] {
+  width: 150px;
+}
+
+/* レンタル用品一覧テーブル */
+.marche-rental-list .wp-list-table {
+  margin-top: 20px;
+}
+
+.marche-rental-list .wp-list-table th:nth-child(1) {
+  width: 30px;
+}
+
+.marche-rental-list .wp-list-table th:nth-child(3) {
+  width: 100px;
+}
+
+.marche-rental-list .wp-list-table th:nth-child(4) {
+  width: 80px;
+}
+
+.marche-rental-list .wp-list-table th:nth-child(5) {
+  width: 80px;
+}
+
+.marche-rental-list .wp-list-table th:nth-child(6) {
+  width: 120px;
+}
+
+.marche-rental-list .wp-list-table th:nth-child(7) {
+  width: 200px;
+}
+
+/* レンタル用品の料金表示 */
+.marche-rental-price {
+  font-weight: bold;
+  color: #0073aa;
+}
+
+/* レンタル用品の単位表示 */
+.marche-rental-unit {
+  color: #666;
+  font-size: 14px;
+}
+
+/* レンタル用品フォームの料金入力 */
+.marche-rental-form .marche-price-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marche-rental-form .marche-yen-symbol {
+  font-weight: bold;
+  color: #666;
+  font-size: 16px;
+}
+
+.marche-rental-form .marche-price-field {
+  width: 120px;
+  text-align: left;
+}
+
+
+
+/* レンタル用品の説明フィールド */
+.marche-rental-form textarea[name="description"] {
+  width: 100%;
+  max-width: 500px;
+  resize: vertical;
+}
+
+/* レンタル用品のソート可能テーブル - HTML5 Drag and Drop API */
+#sortable-rentals .sort-handle {
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: grab;
+  text-align: center;
+  color: #666;
+  padding: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+#sortable-rentals .sort-handle:hover {
+  color: #0073aa;
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+#sortable-rentals .sort-handle:active {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+#sortable-rentals .sort-handle .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* レンタル用品のドラッグ中の行 */
+#sortable-rentals tr.dragging {
+  opacity: 0.5;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* レンタル用品のドラッグオーバー時の行 */
+#sortable-rentals tr.drag-over {
+  background-color: #e3f2fd;
+  border-top: 2px solid #2196f3;
+  border-bottom: 2px solid #2196f3;
+}
+
+/* レンタル用品のドラッグ可能な行 */
+#sortable-rentals tr[draggable="true"] {
+  cursor: move;
+}
+
+#sortable-rentals tr[draggable="true"]:hover {
+  background-color: #f8f9fa;
+}
+
+/* レンタル用品の状態表示 */
+.marche-rental-list tr.inactive {
+  opacity: 0.6;
+}
+
+.marche-rental-list tr.inactive td {
+  color: #999;
+}
+
+/* レンタル用品管理のレスポンシブ対応 */
+@media screen and (max-width: 768px) {
+  .marche-rental-form .marche-price-input {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .marche-rental-form .marche-price-field {
+    width: 100%;
+    max-width: 200px;
+  }
+
+
+
+  .marche-rental-list .wp-list-table th:nth-child(6),
+  .marche-rental-list .wp-list-table td:nth-child(6) {
+    display: none;
+  }
+}
+
+/* レスポンシブ対応（エリア管理） */
+@media screen and (max-width: 768px) {
+  .marche-area-form .form-table .input-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .marche-capacity-indicator {
+    width: 80px;
+    margin-left: 0;
+    margin-top: 5px;
+  }
+
+  .marche-stats-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* ========================================
+   ダッシュボード管理画面
+======================================== */
+
+/* 基本レイアウト */
+.marche-filter-section {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.marche-statistics-section {
+  margin-bottom: 30px;
+}
+
+.marche-table-section {
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* 統計情報 */
+.marche-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.marche-stat-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.marche-stat-box h3 {
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #0073aa;
+  color: #0073aa;
+}
+
+.marche-stat-content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.marche-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.marche-stat-item:last-child {
+  border-bottom: none;
+}
+
+.marche-stat-label {
+  font-weight: 500;
+}
+
+.marche-stat-value {
+  font-weight: bold;
+  color: #0073aa;
+}
+
+/* テーブル・画像 */
+.marche-image-cell {
+  text-align: center;
+  vertical-align: top;
+  padding: 10px;
+}
+
+.marche-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.marche-file-icon {
+  font-size: 50px;
+  color: #ccc;
+  display: block;
+  margin: 25px auto 10px auto;
+}
+
+.marche-no-image {
+  display: block;
+  color: #999;
+  font-style: italic;
+  margin: 40px auto 10px auto;
+}
+
+.marche-download-btn {
+  text-align: center;
+}
+
+/* モバイルラベル（デスクトップでは非表示） */
+.marche-mobile-label {
+  display: none;
+  font-weight: 600;
+  color: #0073aa;
+  font-size: 12px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 詳細画面 */
+.marche-application-detail {
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.marche-detail-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.marche-detail-actions {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.button-link-delete {
+  color: #dc3232 !important;
+  border-color: #dc3232 !important;
+}
+
+.button-link-delete:hover {
+  background: #dc3232 !important;
+  color: #fff !important;
+}
+
+.marche-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.marche-detail-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+.marche-detail-section.marche-full-width {
+  grid-column: 1 / -1;
+}
+
+.marche-detail-section h4 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+  border-bottom: 2px solid #0073aa;
+  padding-bottom: 8px;
+}
+
+/* データ表示 */
+.marche-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.marche-data-item {
+  background: #fff;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.marche-data-item.marche-priority-item {
+  border-left: 4px solid #0073aa;
+  background: #f0f8ff;
+}
+
+.marche-data-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.marche-field-name {
+  display: block;
+  font-weight: 400;
+  color: #666;
+  font-size: 11px;
+  margin-top: 4px;
+  font-family: monospace;
+}
+
+.marche-data-value {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* レンタル用品・ファイル */
+.marche-rental-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.marche-rental-item {
+  background: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.marche-rental-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.marche-rental-quantity {
+  color: #0073aa;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.marche-files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.marche-file-item {
+  text-align: center;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* リンク・ホバー効果 */
+.marche-detail-link {
+  text-decoration: none;
+  display: block;
+}
+
+.marche-detail-link:hover {
+  opacity: 0.8;
+}
+
+/* ========================================
+   Contact Form 7 コード表示
+======================================== */
+
+.marche-cf7-code-section {
+  background: #f1f1f1;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+  border-left: 4px solid #0073aa;
+}
+
+.marche-code-block {
+  background: #fff;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.marche-code-block label {
+  min-width: 150px;
+  font-weight: bold;
+}
+
+.marche-code-block code {
+  flex: 1;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 14px;
+  color: #333;
+}
+
+.marche-copy-button {
+  flex-shrink: 0;
+  background: #0073aa !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 8px 15px !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.marche-copy-button:hover {
+  background: #005a87 !important;
+}
+
+.marche-copy-button:active {
+  background: #004a73 !important;
+}
+
+/* ========================================
+   メイン設定画面
+======================================== */
+
+.marche-settings-section {
+  background: #f9f9f9;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  border-left: 4px solid #0073aa;
+}
+
+.marche-settings-section h2 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.marche-field-label {
+  font-weight: bold;
+  color: #333;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.marche-field-code {
+  flex: 1;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 13px;
+  background: #f8f8f8;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  color: #d63384;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.description {
+  margin-bottom: 15px;
+  color: #666;
+  font-style: italic;
+}
+
+.description strong {
+  color: #333;
+  font-style: normal;
+}
+
+.description code {
+  background: #f1f1f1;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-family: monospace;
+  color: #d63384;
+}
+
+/* ========================================
+   ダッシュボード レスポンシブデザイン
+======================================== */
+
+@media (max-width: 768px) {
+
+  /* フィルター部分 */
+  .marche-filter-section {
+    padding: 15px;
+  }
+
+  .form-table th {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+  }
+
+  .form-table td {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+  }
+
+  .form-table select {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* 統計情報 */
+  .marche-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .marche-stat-box {
+    padding: 15px;
+  }
+
+  .marche-stat-content {
+    max-height: none;
+  }
+
+  /* テーブルをカード形式に変更 */
+  .wp-list-table {
+    display: block;
+    border: none;
+  }
+
+  .wp-list-table thead {
+    display: none;
+  }
+
+  .wp-list-table tbody {
+    display: block;
+  }
+
+  .wp-list-table tr {
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .wp-list-table td {
+    display: block;
+    padding: 12px 15px;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+  }
+
+  .wp-list-table td:last-child {
+    border-bottom: none;
+  }
+
+  .marche-mobile-label {
+    display: block;
+  }
+
+  /* 画像セル */
+  .marche-image-cell {
+    text-align: center;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .marche-thumbnail {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px auto;
+  }
+
+  .marche-file-icon {
+    font-size: 60px;
+    margin: 10px auto 10px auto;
+  }
+
+  .marche-download-btn {
+    margin-top: 10px;
+  }
+
+  .marche-download-btn .button {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  /* データ表示 */
+  .marche-data-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .marche-files-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 詳細画面 */
+  .marche-detail-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .marche-detail-actions .button {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* タブ */
+  .nav-tab-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .nav-tab {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
+
+/* さらに小さい画面 */
+@media (max-width: 480px) {
+  .marche-filter-section {
+    padding: 10px;
+  }
+
+  .marche-stat-box {
+    padding: 12px;
+  }
+
+  .wp-list-table td {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .marche-thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+
+  .marche-file-icon {
+    font-size: 50px;
+  }
+
+  .nav-tab {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+}
+
+/* ========================================
+   並び替え機能スタイル
+   ======================================== */
+
+/* 並び替え可能な列のスタイル */
+.marche-sortable-column {
+  position: relative;
+  cursor: pointer;
+}
+
+.marche-sortable-column:hover {
+  background-color: #f0f0f1;
+}
+
+/* 並び替えリンクのスタイル */
+.marche-sort-link {
+  color: #2271b1;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin: -8px -12px;
+  position: relative;
+}
+
+.marche-sort-link:hover {
+  color: #135e96;
+  text-decoration: none;
+  background-color: rgba(34, 113, 177, 0.1);
+}
+
+.marche-sort-link:focus {
+  color: #135e96;
+  text-decoration: none;
+  box-shadow: inset 0 0 0 1px #2271b1;
+  outline: none;
+}
+
+/* アクティブな並び替えリンクのスタイル */
+.marche-sort-link.marche-sort-active {
+  color: #135e96;
+  font-weight: 600;
+  background-color: rgba(34, 113, 177, 0.15);
+}
+
+.marche-sort-link.marche-sort-active:hover {
+  background-color: rgba(34, 113, 177, 0.2);
+}
+
+/* 並び替えアイコンのスタイル調整 */
+.marche-sort-link::after {
+  content: " ⇅";
+  color: #8c8f94;
+  font-size: 12px;
+  opacity: 0.7;
+  margin-left: 4px;
+}
+
+.marche-sort-link.marche-sort-active::after {
+  content: "";
+}
+
+/* モバイル対応 */
+@media (max-width: 782px) {
+  .marche-sort-link {
+    padding: 6px 8px;
+    margin: -6px -8px;
+    font-size: 14px;
+  }
+
+  .marche-sort-link::after {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 600px) {
+  .marche-sortable-column {
+    min-width: 120px;
+  }
+
+  .marche-sort-link {
+    padding: 4px 6px;
+    margin: -4px -6px;
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .marche-sort-link::after {
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+  }
+}
+
+/* ========================================
+   画像管理画面
+======================================== */
+
+/* 画像管理画面の基本レイアウト */
+.marche-files-section {
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.marche-files-summary {
+  background: #f9f9f9;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-left: 4px solid #0073aa;
+}
+
+/* 画像管理モーダル */
+.marche-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marche-modal-content {
+  background: #fff;
+  padding: 0;
+  border-radius: 4px;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
+}
+
+.marche-modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.marche-modal-header h3 {
+  margin: 0;
+}
+
+.marche-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marche-modal-body {
+  padding: 20px;
+}
+
+.marche-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.marche-detail-table th,
+.marche-detail-table td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.marche-detail-table th {
+  background: #f9f9f9;
+  font-weight: bold;
+  width: 150px;
+}
+
+/* 画像管理画面のレスポンシブ対応 */
+@media (max-width: 768px) {
+  .marche-files-section {
+    padding: 15px;
+  }
+
+  .marche-modal-content {
+    max-width: 95%;
+    max-height: 95vh;
+  }
+
+  .marche-modal-header {
+    padding: 15px;
+  }
+
+  .marche-modal-body {
+    padding: 15px;
+  }
+
+  .marche-detail-table th,
+  .marche-detail-table td {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+}
