@@ -258,24 +258,28 @@ class MarcheDataAccess {
      *
      * @param int $formId
      * @param int $dateId 開催日ID（オプション）
+     * @param bool $includeInactive 無効エリアも含めるかどうか（デフォルト: false）
      * @return array
      */
-    public function getAreaOptions($formId, $dateId = null) {
+    public function getAreaOptions($formId, $dateId = null, $includeInactive = false) {
         global $wpdb;
 
         $tableName = $wpdb->prefix . 'marche_areas';
 
+        // 管理画面用とフロントエンド用の取得方法を分離
+        $activeCondition = $includeInactive ? '' : 'AND is_active = 1';
+
         if ($dateId) {
             // 特定の開催日のエリアを取得
             $results = $wpdb->get_results($wpdb->prepare(
-                "SELECT id, area_name, price, capacity, capacity_limit_enabled, date_id FROM {$tableName} WHERE form_id = %d AND date_id = %d AND is_active = 1 ORDER BY sort_order",
+                "SELECT id, area_name, price, capacity, capacity_limit_enabled, date_id, is_active FROM {$tableName} WHERE form_id = %d AND date_id = %d {$activeCondition} ORDER BY sort_order",
                 $formId,
                 $dateId
             ));
         } else {
             // 全ての開催日のエリアを取得（後方互換性のため）
             $results = $wpdb->get_results($wpdb->prepare(
-                "SELECT id, area_name, price, capacity, capacity_limit_enabled, date_id FROM {$tableName} WHERE form_id = %d AND is_active = 1 ORDER BY sort_order",
+                "SELECT id, area_name, price, capacity, capacity_limit_enabled, date_id, is_active FROM {$tableName} WHERE form_id = %d {$activeCondition} ORDER BY sort_order",
                 $formId
             ));
         }
@@ -283,6 +287,11 @@ class MarcheDataAccess {
         $options = array();
 
         foreach ($results as $row) {
+            // フロントエンド（Contact Form 7）では無効エリアを除外
+            if (!$includeInactive && !$row->is_active) {
+                continue;
+            }
+
             // 定員制限が有効な場合のみ定員状況を確認
             $capacityLimitEnabled = isset($row->capacity_limit_enabled) ? $row->capacity_limit_enabled : 1;
 
