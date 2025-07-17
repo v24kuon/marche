@@ -216,7 +216,7 @@ class MarcheDashboardManagement {
 
         $tableName = $wpdb->prefix . 'marche_dates';
         return $wpdb->get_results($wpdb->prepare(
-            "SELECT id, date_value, description FROM {$tableName} WHERE form_id = %d AND is_active = 1 ORDER BY sort_order, date_value",
+            "SELECT id, date_value, description, is_active FROM {$tableName} WHERE form_id = %d ORDER BY sort_order, date_value",
             $formId
         ), ARRAY_A);
     }
@@ -238,7 +238,7 @@ class MarcheDashboardManagement {
                 a.capacity_limit_enabled
              FROM {$wpdb->prefix}marche_areas a
              LEFT JOIN {$tableName} ap ON a.area_name = ap.area_name AND ap.form_id = %d AND ap.date_id = %d
-             WHERE a.form_id = %d AND a.date_id = %d AND a.is_active = 1
+             WHERE a.form_id = %d AND a.date_id = %d
              GROUP BY a.id, a.area_name, a.capacity, a.capacity_limit_enabled
              ORDER BY a.sort_order, a.area_name",
             $formId, $dateId, $formId, $dateId
@@ -568,6 +568,9 @@ class MarcheDashboardManagement {
                                             echo esc_html($date['date_value']);
                                             if ($date['description']) {
                                                 echo ' - ' . esc_html($date['description']);
+                                            }
+                                            if (!$date['is_active']) {
+                                                echo ' （無効）';
                                             }
                                             ?>
                                         </option>
