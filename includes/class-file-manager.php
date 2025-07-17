@@ -37,7 +37,7 @@ class Marche_File_Manager {
     }
 
     /**
-     * Contact Form 7イルアップロード処理
+     * Contact Form 7ファイルアップロード処理
      *
      * @param WPCF7_ContactForm $contact_form Contact Form 7オブジェクト
      * @return void
@@ -141,7 +141,7 @@ class Marche_File_Manager {
     }
 
     /**
-     * Contact Form7submission ファイルの保存処理
+     * Contact Form 7 submission ファイルの保存処理
      *
      * @param array  $uploaded_files Contact Form 7のアップロードファイル配列
      * @param string $date_value 開催日
