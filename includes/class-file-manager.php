@@ -37,9 +37,9 @@ class Marche_File_Manager {
     }
 
     /**
-     * Contact Form 7 メール送信完了時のファイル処理
+     * Contact Form 7ファイルアップロード処理
      *
-     * @param WPCF7_ContactForm $contact_form フォームオブジェクト
+     * @param WPCF7_ContactForm $contact_form Contact Form 7オブジェクト
      * @return void
      */
     public function handleFileUpload($contact_form) {
@@ -55,11 +55,6 @@ class Marche_File_Manager {
             // Contact Form 7のアップロードファイル取得
             $uploaded_files = $submission->uploaded_files();
             if (empty($uploaded_files)) {
-                // フォールバック: レガシー方式でファイル検出
-                $legacy_files = $this->getUploadedFiles();
-                if (!empty($legacy_files)) {
-                    $this->handleLegacyFileUpload($contact_form, $legacy_files);
-                }
                 return;
             }
 
@@ -85,12 +80,12 @@ class Marche_File_Manager {
      * @return void
      */
     private function processFileUpload($form_id, $uploaded_files, $posted_data) {
-        // 申し込み者情報の取得（Flamingo スタイルで堅牢化）
-        $customer_name = '';
-        if (isset($posted_data['your-name'])) {
-            $customer_name = is_array($posted_data['your-name']) ?
-                sanitize_text_field($posted_data['your-name'][0]) :
-                sanitize_text_field($posted_data['your-name']);
+        // ブース名の取得（Flamingo スタイルで堅牢化）
+        $booth_name = '';
+        if (isset($posted_data['booth-name'])) {
+            $booth_name = is_array($posted_data['booth-name']) ?
+                sanitize_text_field($posted_data['booth-name'][0]) :
+                sanitize_text_field($posted_data['booth-name']);
         }
 
         $date_value = '';
@@ -100,7 +95,7 @@ class Marche_File_Manager {
                 sanitize_text_field($posted_data['date']);
         }
 
-        if (empty($customer_name) || empty($date_value)) {
+        if (empty($booth_name) || empty($date_value)) {
             return;
         }
 
@@ -117,7 +112,7 @@ class Marche_File_Manager {
         }
 
         // ファイル保存処理（Contact Form 7 アップロードファイル形式）
-        $saved_files = $this->saveSubmissionFiles($uploaded_files, $date_value, $customer_name, $application_id);
+        $saved_files = $this->saveSubmissionFiles($uploaded_files, $date_value, $booth_name, $application_id);
 
         if (empty($saved_files)) {
             return;
@@ -125,101 +120,6 @@ class Marche_File_Manager {
 
         // 申し込みデータにファイル情報を追加
         $this->updateApplicationWithFiles($application_id, $saved_files);
-    }
-
-    /**
-     * レガシー方式でのファイルアップロード処理（$_FILES使用）
-     *
-     * @param WPCF7_ContactForm $contact_form Contact Form 7オブジェクト
-     * @param array $uploaded_files $_FILESから取得したファイル一覧
-     * @return void
-     */
-    private function handleLegacyFileUpload($contact_form, $uploaded_files) {
-        $form_id = $contact_form->id();
-        $posted_data = $_POST;
-
-        try {
-            // 申し込み者情報の取得（Flamingo スタイルで堅牢化）
-            $customer_name = '';
-            if (isset($posted_data['your-name'])) {
-                $customer_name = is_array($posted_data['your-name']) ?
-                    sanitize_text_field($posted_data['your-name'][0]) :
-                    sanitize_text_field($posted_data['your-name']);
-            }
-
-            $date_value = '';
-            if (isset($posted_data['date'])) {
-                $date_value = is_array($posted_data['date']) ?
-                    sanitize_text_field($posted_data['date'][0]) :
-                    sanitize_text_field($posted_data['date']);
-            }
-
-            if (empty($customer_name) || empty($date_value)) {
-                return;
-            }
-
-            // 最新の申し込みIDを取得
-            $application_id = $this->getLatestApplicationId($form_id);
-            if (!$application_id) {
-                sleep(1);
-                $application_id = $this->getLatestApplicationId($form_id);
-            }
-
-            if (!$application_id) {
-                return;
-            }
-
-            // レガシー方式でファイル保存
-            $saved_files = $this->saveFiles($uploaded_files, $date_value, $customer_name, $application_id);
-
-            if (!empty($saved_files)) {
-                $this->updateApplicationWithFiles($application_id, $saved_files);
-            }
-
-        } catch (Exception $e) {
-        }
-    }
-
-    /**
-     * アップロードされたファイルの取得
-     *
-     * @return array アップロードファイル一覧
-     */
-    private function getUploadedFiles() {
-        if (empty($_FILES)) {
-            return array();
-        }
-
-        $uploaded_files = array();
-        foreach ($_FILES as $field_name => $file_data) {
-            if (!is_array($file_data['name'])) {
-                // 単一ファイル
-                if ($file_data['error'] === UPLOAD_ERR_OK) {
-                    $uploaded_files[] = array(
-                        'field_name' => $field_name,
-                        'name' => $file_data['name'],
-                        'tmp_name' => $file_data['tmp_name'],
-                        'type' => $file_data['type'],
-                        'size' => $file_data['size']
-                    );
-                }
-            } else {
-                // 複数ファイル
-                foreach ($file_data['name'] as $index => $name) {
-                    if ($file_data['error'][$index] === UPLOAD_ERR_OK) {
-                        $uploaded_files[] = array(
-                            'field_name' => $field_name,
-                            'name' => $name,
-                            'tmp_name' => $file_data['tmp_name'][$index],
-                            'type' => $file_data['type'][$index],
-                            'size' => $file_data['size'][$index]
-                        );
-                    }
-                }
-            }
-        }
-
-        return $uploaded_files;
     }
 
     /**
@@ -241,47 +141,19 @@ class Marche_File_Manager {
     }
 
     /**
-     * ファイル保存処理
-     *
-     * @param array  $uploaded_files アップロードファイル一覧
-     * @param string $date_value 開催日
-     * @param string $customer_name 顧客名
-     * @param int    $application_id 申し込みID
-     * @return array 保存されたファイル情報
-     */
-    private function saveFiles($uploaded_files, $date_value, $customer_name, $application_id) {
-        $saved_files = array();
-
-        // 保存ディレクトリの作成
-        $save_directory = $this->createSaveDirectory($date_value, $customer_name);
-        if (!$save_directory) {
-            throw new Exception('Failed to create save directory');
-        }
-
-        foreach ($uploaded_files as $file) {
-            $saved_file = $this->saveFile($file, $save_directory, $application_id);
-            if ($saved_file) {
-                $saved_files[] = $saved_file;
-            }
-        }
-
-        return $saved_files;
-    }
-
-    /**
      * Contact Form 7 submission ファイルの保存処理
      *
      * @param array  $uploaded_files Contact Form 7のアップロードファイル配列
      * @param string $date_value 開催日
-     * @param string $customer_name 顧客名
+     * @param string $booth_name ブース名
      * @param int    $application_id 申し込みID
      * @return array 保存されたファイル情報
      */
-    private function saveSubmissionFiles($uploaded_files, $date_value, $customer_name, $application_id) {
+    private function saveSubmissionFiles($uploaded_files, $date_value, $booth_name, $application_id) {
         $saved_files = array();
 
         // 保存ディレクトリの作成
-        $save_directory = $this->createSaveDirectory($date_value, $customer_name);
+        $save_directory = $this->createSaveDirectory($date_value, $booth_name);
         if (!$save_directory) {
             throw new Exception('Failed to create save directory');
         }
@@ -319,10 +191,10 @@ class Marche_File_Manager {
      * 保存ディレクトリの作成
      *
      * @param string $date_value 開催日
-     * @param string $customer_name 顧客名
+     * @param string $booth_name ブース名
      * @return string|false ディレクトリパス
      */
-    private function createSaveDirectory($date_value, $customer_name) {
+    private function createSaveDirectory($date_value, $booth_name) {
         $upload_dir = wp_upload_dir();
         $base_dir = $upload_dir['basedir'] . '/' . self::BASE_UPLOAD_DIR;
 
@@ -332,22 +204,22 @@ class Marche_File_Manager {
             return false;
         }
 
-        // 顧客名ディレクトリ（連番付き）
-        $customer_dir_base = $date_dir . '/' . sanitize_file_name($customer_name);
-        $customer_dir = $customer_dir_base;
+        // ブース名ディレクトリ（連番付き）
+        $booth_dir_base = $date_dir . '/' . sanitize_file_name($booth_name);
+        $booth_dir = $booth_dir_base;
         $counter = 1;
 
         // 同名ディレクトリが存在する場合は連番を追加
-        while (file_exists($customer_dir)) {
-            $customer_dir = $customer_dir_base . '_' . $counter;
+        while (file_exists($booth_dir)) {
+            $booth_dir = $booth_dir_base . '_' . $counter;
             $counter++;
         }
 
-        if (!wp_mkdir_p($customer_dir)) {
+        if (!wp_mkdir_p($booth_dir)) {
             return false;
         }
 
-        return $customer_dir;
+        return $booth_dir;
     }
 
     /**

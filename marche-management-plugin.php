@@ -675,11 +675,12 @@ class MarcheManagementPlugin {
         echo '<p class="description">これらのフィールドは必ずフォームに含めてください。</p>';
 
         $requiredFields = array(
+            'ブース名' => '[text* booth-name placeholder "ブース名"]',
             '申し込み者名' => '[text* your-name placeholder "お名前"]',
             'メールアドレス' => '[email* your-email placeholder "メールアドレス"]',
             '開催日選択' => '[select* date data:date first_as_label "開催日を選択してください"]',
             'エリア選択' => '[select* booth-location data:booth-location first_as_label "エリアを選択してください"]',
-            '車両高さ' => '[select* booth-car-height "ロールーフ" "ハイルーフ"]',
+            '車両高さ' => '[number booth-car-height min:1000 placeholder "車両高さ（mm）"]',
             '車で搬入希望' => '[radio booth-carrying use_label_element "希望する" "希望しない"]',
             'チラシ枚数' => '[number* flyer-number min:0 max:9999 placeholder "チラシ枚数"]'
         );
