@@ -69,6 +69,20 @@ class MarcheManagementPlugin {
     private $settingsManager;
 
     /**
+     * 申し込みデータ保存クラスのインスタンス
+     *
+     * @var MarcheApplicationSaver
+     */
+    private $applicationSaver;
+
+    /**
+     * ファイル管理クラスのインスタンス
+     *
+     * @var Marche_File_Manager
+     */
+    private $fileManager;
+
+    /**
      * シングルトンインスタンスの取得
      *
      * @return MarcheManagementPlugin
