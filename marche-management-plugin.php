@@ -398,15 +398,7 @@ class MarcheManagementPlugin {
         return $this->settingsManager->getFormPricingSettings($formId);
     }
 
-    /**
-     * フォームの選択肢データをJSON形式で取得
-     *
-     * @param int $formId
-     * @return string
-     */
-    public function getFormOptionsJson($formId) {
-        return $this->formHooks->getFormOptionsJson($formId);
-    }
+
 
     /**
      * 開催日に基づくエリア選択肢のAJAX取得
@@ -450,11 +442,6 @@ class MarcheManagementPlugin {
 
     // ===== 管理画面コールバックメソッド =====
 
-    /**
-     * フォーム管理画面のコールバック
-     *
-     * @return void
-     */
     /**
      * フォーム料金設定取得のAJAXハンドラ
      */
@@ -688,6 +675,9 @@ class MarcheManagementPlugin {
         // Contact Form 7必須フィールドのみ表示
         $this->displayRequiredFields();
 
+        // 管理者設定用Contact Form 7コード表示
+        $this->displayAdminSettingsCode();
+
         echo '</div>';
     }
 
@@ -801,6 +791,22 @@ class MarcheManagementPlugin {
             // CSSは assets/css/admin.css に統合済み
             $css_added = true;
         }
+    }
+
+    /**
+     * 管理者設定用Contact Form 7コードの表示
+     */
+    private function displayAdminSettingsCode() {
+        echo '<div class="marche-settings-section">';
+        echo '<h2>⚙️ 管理者設定用Contact Form 7コード</h2>';
+                        echo '<p class="description">管理者設定が有効な場合、管理者権限を持つユーザーには「リストに追加」ボタンが表示され、一般ユーザーにはStripe決済ボタンが表示されます。設定が無効な場合は全ユーザーにStripe決済ボタンが表示されます。</p>';
+
+                        $adminSettingsFields = array(
+                    '条件付きボタン（自動切り替え）' => '[conditional_button]'
+                );
+
+        $this->displayFieldList($adminSettingsFields, 'admin-settings');
+        echo '</div>';
     }
 
     // ===== プラグインアクティベーション・デアクティベーション =====

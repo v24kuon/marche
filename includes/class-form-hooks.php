@@ -65,6 +65,9 @@ class MarcheFormHooks {
 
         // Stripe連携フック
         add_filter('wpcf7_stripe_payment_intent_parameters', array($this, 'setStripePaymentParameters'), 10, 1);
+
+        // 管理者権限に応じたボタン表示制御
+        add_filter('wpcf7_contact_form_properties', array($this, 'processConditionalButton'), 10, 2);
     }
 
     /**
@@ -314,21 +317,7 @@ class MarcheFormHooks {
         return $result;
     }
 
-    /**
-     * フォームの選択肢データをJSON形式で取得
-     *
-     * @param int $formId
-     * @return string
-     */
-    public function getFormOptionsJson($formId) {
-        $options = array(
-            'dates' => $this->dataAccess->getDateOptions($formId),
-            'areas' => $this->dataAccess->getAreaOptions($formId),
-            'rentals' => array() // レンタル用品選択肢は現在未実装
-        );
 
-        return wp_json_encode($options);
-    }
 
             /**
      * 合計金額メールタグの置換処理
@@ -492,7 +481,6 @@ class MarcheFormHooks {
                     // メタデータの設定
                     $metadata = $this->priceCalculator->generateStripeMetadata($formId, $formData, $priceResult);
                     $parameters['metadata'] = $metadata;
-
                 } else {
                     // 料金計算エラーの場合
                     $parameters['currency'] = 'jpy';
@@ -503,8 +491,6 @@ class MarcheFormHooks {
                         'form_id' => $formId
                     );
                 }
-            } else {
-                // 料金計算機能が利用できない場合のログ
             }
 
 
@@ -523,80 +509,61 @@ class MarcheFormHooks {
         return $parameters;
     }
 
+
+
     /**
-     * Stripe決済パラメータフィルター
+     * 条件付きボタン表示制御
      *
-     * @param array $intent_params Stripe PaymentIntent パラメータ
-     * @param WPCF7_ContactForm $contact_form Contact Form 7 フォームオブジェクト
-     * @return array 更新されたパラメータ
+     * @param array $properties フォームプロパティ
+     * @param WPCF7_ContactForm $contact_form コンタクトフォームオブジェクト
+     * @return array 修正されたフォームプロパティ
      */
-    public function filterStripePaymentIntentParameters($intent_params, $contact_form) {
-        try {
-            // 現在のフォームIDを取得
-            $formId = $contact_form ? $contact_form->id() : null;
-
-            if (!$formId) {
-                return $intent_params;
-            }
-
-            // フォーム情報の取得
-            $settingsManager = new MarcheSettingsManager();
-            $formInfo = $settingsManager->getFormInfo($formId);
-
-            if (!$formInfo) {
-                return $intent_params;
-            }
-
-            // Stripe設定の確認
-            if (!$formInfo['enable_stripe']) {
-                return $intent_params;
-            }
-
-            // 価格計算クラスの取得
-            if (!class_exists('MarchePriceCalculator')) {
-                return $intent_params;
-            }
-
-            $priceCalculator = new MarchePriceCalculator();
-
-            // 現在の送信データから価格を計算
-            $submission = WPCF7_Submission::get_instance();
-            if (!$submission) {
-                return $intent_params;
-            }
-
-            $posted_data = $submission->get_posted_data();
-            $priceResult = $priceCalculator->calculatePrice($formId, $posted_data);
-
-            if ($priceResult['success']) {
-                // 価格をStripeパラメータに設定（円 -> セント変換）
-                $amount_in_cents = intval($priceResult['total_price'] * 100);
-                $intent_params['amount'] = $amount_in_cents;
-                $intent_params['currency'] = 'jpy';
-
-                // メタデータに詳細情報を追加
-                $intent_params['metadata'] = array_merge(
-                    isset($intent_params['metadata']) ? $intent_params['metadata'] : array(),
-                    array(
-                        'plugin' => 'marche-management',
-                        'form_id' => $formId,
-                        'base_price' => $priceResult['base_price'],
-                        'area_price' => $priceResult['area_price'],
-                        'rental_price' => $priceResult['rental_price'],
-                        'total_price' => $priceResult['total_price']
-                    )
-                );
-            } else {
-                // 価格計算エラーの場合はデフォルト金額を設定
-                $intent_params['amount'] = $formInfo['default_stripe_amount'] * 100;
-                $intent_params['currency'] = 'jpy';
-            }
-
-            return $intent_params;
-
-        } catch (Exception $e) {
-            // エラーが発生した場合は元のパラメータを返す
-            return $intent_params;
+    public function processConditionalButton($properties, $contact_form) {
+        // 管理画面では処理しない
+        if (is_admin() && !(defined('DOING_AJAX') && DOING_AJAX)) {
+            return $properties;
         }
+
+        $form = $properties['form'];
+
+        // 管理者設定の取得
+        $adminNoPayment = $this->getAdminSetting('admin_no_payment', '0');
+        $isAdmin = current_user_can('administrator');
+
+        // [conditional_button]タグの処理
+        $form = preg_replace_callback(
+            '/\[conditional_button\]/',
+            function($matches) use ($adminNoPayment, $isAdmin) {
+                // 管理者設定が有効で管理者権限がある場合
+                if ($adminNoPayment === '1' && $isAdmin) {
+                    return '[submit "リストに追加"]';
+                }
+                // それ以外の場合はStripe決済ボタン
+                return '[stripe currency:jpy amount:4000 "料金を確定してカード番号を入力する" "2000円を支払う"]';
+            },
+            $form
+        );
+
+        $properties['form'] = $form;
+        return $properties;
+    }
+
+    /**
+     * 管理者設定の取得
+     *
+     * @param string $key 設定キー
+     * @param mixed $default デフォルト値
+     * @return mixed 設定値
+     */
+    private function getAdminSetting($key, $default = null) {
+        global $wpdb;
+        $tableName = $wpdb->prefix . 'marche_admin_settings';
+
+        $value = $wpdb->get_var($wpdb->prepare(
+            "SELECT setting_value FROM {$tableName} WHERE setting_key = %s",
+            $key
+        ));
+
+        return $value !== null ? $value : $default;
     }
 }
