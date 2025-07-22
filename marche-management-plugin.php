@@ -670,13 +670,93 @@ class MarcheManagementPlugin {
      * @return void
      */
     public function settingsPageCallback() {
+        // 管理者設定の保存処理
+        if (isset($_POST['save_admin_settings']) && wp_verify_nonce($_POST['admin_settings_nonce'], 'save_admin_settings')) {
+            $this->saveAdminSettings();
+        }
+
         echo '<div class="wrap">';
         echo '<h1>マルシェ管理設定</h1>';
+
+        // 管理者設定セクション
+        $this->displayAdminSettings();
+
+        echo '<hr style="margin: 30px 0;">';
+        echo '<h2>Contact Form 7設定</h2>';
         echo '<p>Contact Form 7で設定が必要なフィールドの一覧です。各フィールドのコードをコピーしてフォームエディタに貼り付けてください。</p>';
 
         // Contact Form 7必須フィールドのみ表示
         $this->displayRequiredFields();
 
+        echo '</div>';
+    }
+
+    /**
+     * 管理者設定の表示
+     */
+    private function displayAdminSettings() {
+        // 現在の設定値を取得
+        $adminNoPayment = $this->getAdminSetting('admin_no_payment', '0');
+        $adminNoEmail = $this->getAdminSetting('admin_no_email', '0');
+
+        echo '<div class="marche-admin-settings">';
+        echo '<h2>⚙️ 管理者設定</h2>';
+        echo '<p class="description">管理者向けの特別設定です。</p>';
+
+        echo '<form method="post" action="">';
+        wp_nonce_field('save_admin_settings', 'admin_settings_nonce');
+
+        echo '<table class="form-table">';
+        echo '<tbody>';
+
+        // 管理者は決済なしで申し込む
+        echo '<tr>';
+        echo '<th scope="row">';
+        echo '<label for="admin_no_payment">管理者は決済なしで申し込む</label>';
+        echo '</th>';
+        echo '<td>';
+        echo '<input type="checkbox" id="admin_no_payment" name="admin_no_payment" value="1" ' . checked($adminNoPayment, '1', false) . ' />';
+        echo '<p class="description">管理者が申し込む場合、決済処理をスキップします。</p>';
+        echo '</td>';
+        echo '</tr>';
+
+        // 管理者が申し込む場合はメールは送らない
+        echo '<tr>';
+        echo '<th scope="row">';
+        echo '<label for="admin_no_email">管理者が申し込む場合はメールは送らない</label>';
+        echo '</th>';
+        echo '<td>';
+        echo '<input type="checkbox" id="admin_no_email" name="admin_no_email" value="1" ' . checked($adminNoEmail, '1', false) . ' />';
+        echo '<p class="description">管理者が申し込む場合、メール送信をスキップします。</p>';
+        echo '</td>';
+        echo '</tr>';
+
+        echo '</tbody>';
+        echo '</table>';
+
+        echo '<p class="submit">';
+        echo '<input type="submit" name="save_admin_settings" class="button-primary" value="設定を保存" />';
+        echo '</p>';
+
+        echo '</form>';
+        echo '</div>';
+    }
+
+    /**
+     * 管理者設定の保存
+     */
+    private function saveAdminSettings() {
+        // 管理者は決済なしで申し込む
+        $adminNoPayment = isset($_POST['admin_no_payment']) ? '1' : '0';
+        $this->saveAdminSetting('admin_no_payment', $adminNoPayment);
+
+        // 管理者が申し込む場合はメールは送らない
+        $adminNoEmail = isset($_POST['admin_no_email']) ? '1' : '0';
+        $this->saveAdminSetting('admin_no_email', $adminNoEmail);
+
+        // 成功メッセージを表示
+        echo '<div class="notice notice-success is-dismissible">';
+        echo '<p>管理者設定を保存しました。</p>';
         echo '</div>';
     }
 
@@ -869,6 +949,18 @@ class MarcheManagementPlugin {
             KEY uploaded_at (uploaded_at)
         ) {$charsetCollate};";
 
+        // 管理者設定テーブル
+        $adminSettingsTable = $wpdb->prefix . 'marche_admin_settings';
+        $adminSettingsTableSql = "CREATE TABLE {$adminSettingsTable} (
+            id int(11) NOT NULL AUTO_INCREMENT,
+            setting_key varchar(100) NOT NULL,
+            setting_value text DEFAULT NULL,
+            created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+            updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY setting_key (setting_key)
+        ) {$charsetCollate};";
+
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($formsTableSql);
         dbDelta($datesTableSql);
@@ -876,12 +968,16 @@ class MarcheManagementPlugin {
         dbDelta($rentalItemsTableSql);
         dbDelta($applicationsTableSql);
         dbDelta($filesTableSql);
+        dbDelta($adminSettingsTableSql);
 
         // 既存のテーブルに新しいカラムを追加（アップグレード対応）
         $this->upgradeFormsTable();
         $this->upgradeRentalItemsTable();
         $this->upgradeAreasTable();
         $this->upgradeApplicationsTable();
+
+        // 管理者設定の初期値を設定
+        $this->initializeAdminSettings();
     }
 
     /**
@@ -1116,6 +1212,105 @@ class MarcheManagementPlugin {
         );
 
         update_option('marche_management_settings', $defaultSettings);
+    }
+
+    /**
+     * 管理者設定の初期化
+     *
+     * @return void
+     */
+    private function initializeAdminSettings() {
+        global $wpdb;
+        $tableName = $wpdb->prefix . 'marche_admin_settings';
+
+        // 管理者設定の初期値を設定
+        $defaultSettings = array(
+            'admin_no_payment' => '0', // 管理者は決済なしで申し込む（デフォルト：無効）
+            'admin_no_email' => '0'    // 管理者が申し込む場合はメールは送らない（デフォルト：無効）
+        );
+
+        foreach ($defaultSettings as $key => $value) {
+            // 既存の設定があればスキップ
+            $existing = $wpdb->get_var($wpdb->prepare(
+                "SELECT setting_value FROM {$tableName} WHERE setting_key = %s",
+                $key
+            ));
+
+            if ($existing === null) {
+                $wpdb->insert(
+                    $tableName,
+                    array(
+                        'setting_key' => $key,
+                        'setting_value' => $value
+                    ),
+                    array('%s', '%s')
+                );
+            }
+        }
+    }
+
+    /**
+     * 管理者設定の取得
+     *
+     * @param string $key 設定キー
+     * @param mixed $default デフォルト値
+     * @return mixed 設定値
+     */
+    public function getAdminSetting($key, $default = null) {
+        global $wpdb;
+        $tableName = $wpdb->prefix . 'marche_admin_settings';
+
+        $value = $wpdb->get_var($wpdb->prepare(
+            "SELECT setting_value FROM {$tableName} WHERE setting_key = %s",
+            $key
+        ));
+
+        return $value !== null ? $value : $default;
+    }
+
+    /**
+     * 管理者設定の保存
+     *
+     * @param string $key 設定キー
+     * @param mixed $value 設定値
+     * @return bool 保存成功時true
+     */
+    public function saveAdminSetting($key, $value) {
+        global $wpdb;
+        $tableName = $wpdb->prefix . 'marche_admin_settings';
+
+        $result = $wpdb->replace(
+            $tableName,
+            array(
+                'setting_key' => $key,
+                'setting_value' => $value
+            ),
+            array('%s', '%s')
+        );
+
+        return $result !== false;
+    }
+
+    /**
+     * 全管理者設定の取得
+     *
+     * @return array 全設定値
+     */
+    public function getAllAdminSettings() {
+        global $wpdb;
+        $tableName = $wpdb->prefix . 'marche_admin_settings';
+
+        $settings = $wpdb->get_results(
+            "SELECT setting_key, setting_value FROM {$tableName}",
+            ARRAY_A
+        );
+
+        $result = array();
+        foreach ($settings as $setting) {
+            $result[$setting['setting_key']] = $setting['setting_value'];
+        }
+
+        return $result;
     }
 }
 
