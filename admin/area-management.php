@@ -48,24 +48,24 @@ class MarcheAreaManagement {
             self::displayDateSelector($formId, $dateId);
 
             if ($dateId) {
-                switch ($action) {
-                    case 'add':
+            switch ($action) {
+                case 'add':
                         self::displayAddForm($formId, $dateId);
-                        break;
-                    case 'edit':
+                    break;
+                case 'edit':
                         self::displayEditForm($formId, $dateId, $areaId);
-                        break;
-                    case 'delete':
+                    break;
+                case 'delete':
                         self::deleteArea($formId, $dateId, $areaId);
                         self::displayAreaList($formId, $dateId);
-                        break;
-                    case 'toggle':
+                    break;
+                case 'toggle':
                         self::toggleAreaStatus($formId, $dateId, $areaId);
                         self::displayAreaList($formId, $dateId);
-                        break;
-                    default:
+                    break;
+                default:
                         self::displayAreaList($formId, $dateId);
-                        break;
+                    break;
                 }
             }
         }
@@ -817,10 +817,10 @@ class MarcheAreaManagement {
             ));
         } else {
             // 全ての開催日のエリアを取得（後方互換性のため）
-            $areas = $wpdb->get_results($wpdb->prepare(
-                "SELECT * FROM {$tableName} WHERE form_id = %d AND is_active = 1 ORDER BY sort_order, area_name",
-                $formId
-            ));
+        $areas = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$tableName} WHERE form_id = %d AND is_active = 1 ORDER BY sort_order, area_name",
+            $formId
+        ));
         }
 
         $result = array();
